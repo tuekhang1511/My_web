@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-&dy8tuf@mfr00^*uq%xuohbgv^qg!q&co06licza*#h=@t-vo8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tuekhang1511.pythonanywhere.com']
+ALLOWED_HOSTS = ['tuekhang1511.pythonanywhere.com','127.0.0.1']
 
 LOGIN_URL = '/login/'
 
@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'item',
     'conversation',
     'dashboard',
-    'sendgrid',
 ]
 
 MIDDLEWARE = [
@@ -154,7 +153,7 @@ LOGOUT_REDIRECT_URL = 'core:index'
 
 AUTH_USER_MODEL = 'core.User'
 
-AUTHENTICATION_BACKENDS = [
-    'core.utils.EmailVerificationBackend',
-    'django.contrib.auth.backends.ModelBackend',  # Keep the default ModelBackend as well
-]
+# AUTHENTICATION_BACKENDS = [
+#     'core.utils.EmailVerificationBackend',
+#     'django.contrib.auth.backends.ModelBackend',  # Keep the default ModelBackend as well
+# ]

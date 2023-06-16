@@ -10,6 +10,7 @@ def items(request):
     category_id = request.GET.get('category', 0)
     categories = Category.objects.all()
     items = Item.objects.filter(is_sold=False)
+    sold_items = Item.objects.filter(is_sold=True)
 
     if category_id:
         items = items.filter(category_id=category_id)
@@ -19,6 +20,7 @@ def items(request):
 
     return render(request, 'item/items.html', {
         'items': items,
+        'sold_items':sold_items,
         'query': query,
         'categories': categories,
         'category_id': int(category_id)
@@ -77,3 +79,12 @@ def delete(request, pk):
     item.delete()
 
     return redirect('dashboard:index')
+
+def mark_item_as_sold(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+
+    if request.method == 'POST':
+        item.is_sold = True
+        item.save()
+
+    return redirect('item:detail', pk=pk)

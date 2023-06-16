@@ -3,15 +3,15 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from core.models import User
 # from django.contrib.auth.models import User
 
-class LoginForm(AuthenticationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder': 'Your username',
-        'class': 'w-full py-4 px-6 rounded-xl',
-    }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Your password',
-        'class': 'w-full py-4 px-6 rounded-xl',
-    }))
+# class LoginForm(AuthenticationForm):
+#     username = forms.CharField(widget=forms.TextInput(attrs={
+#         'placeholder': 'Your username',
+#         'class': 'w-full py-4 px-6 rounded-xl',
+#     }))
+#     password = forms.CharField(widget=forms.PasswordInput(attrs={
+#         'placeholder': 'Your password',
+#         'class': 'w-full py-4 px-6 rounded-xl',
+#     }))
 
 class SignupForm(UserCreationForm):
     class Meta:
@@ -35,14 +35,19 @@ class SignupForm(UserCreationForm):
         'class': 'w-full py-4 px-6 rounded-xl',
     }))
 
-class ChangeAvatarForm(forms.ModelForm):    
-    class Meta:        
-        model = User
-        fields = [
-            'avatar',
-        ]
+# from django.forms.widgets import ClearableFileInput
 
-class EmailVerificationAuthenticationForm(AuthenticationForm):
+# class CustomClearableFileInput(ClearableFileInput):
+#     template_name = 'core/custom_button_avatar.html'
+
+class ChangeAvatarForm(forms.ModelForm):
+    # avatar = forms.ImageField(widget=CustomClearableFileInput())
+    class Meta:
+        model = User
+        fields = ['avatar']
+
+
+class LoginFormWithEmailVerification(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={
         'placeholder': 'Your username',
         'class': 'w-full py-4 px-6 rounded-xl',

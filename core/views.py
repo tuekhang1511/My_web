@@ -14,10 +14,12 @@ from .models import user_avatar_upload_path
 
 # Create your views here.
 def index(request):
-    items = Item.objects.filter(is_sold=False)[0:6]
+    items = Item.objects.filter(is_sold=False)
+    sold_items = Item.objects.filter(is_sold=True)
     catergories = Category.objects.all()
     context = {
         'categories' : catergories,
+        'sold_items':sold_items,
         'items': items    
     }
     return render(request, 'core/index.html',context)
@@ -36,6 +38,7 @@ def signup(request):
         if form.is_valid():
             # user = form.save()
             form.save(commit=False)
+            
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password1']
@@ -49,7 +52,7 @@ def signup(request):
                 token = str(uuid.uuid4())
             )
             send_email_token(email, verification_obj.token)
-            
+            return redirect('core:wait_for_verification')
             # form.save()
             # return redirect('/login/')
     else:
@@ -73,8 +76,8 @@ def verify(request, token):
     except EmailVerificationToken.DoesNotExist:
         return HttpResponse("Invalid token")
 
-def wait_for_verification(request, token):
-    return render(request, 'core/verification_success.html',{})
+def wait_for_verification(request):
+    return render(request, 'core/wait_for_verification.html',{})
 
 
 def profile(request, pk):
@@ -83,12 +86,6 @@ def profile(request, pk):
     return render(request, 'core/profile.html',{
         'user':user,
     })
-
-def verification_success(request):
-    return render(request, 'core/verification_success.html',{})
-
-def verification_failed(request):
-    return render(request, 'core/verification_failed.html',{})
 
 import os
 def change_avatar(request):
@@ -99,20 +96,6 @@ def change_avatar(request):
             user = request.user  # Retrieve the currently logged-in user
             # user.avatar.delete()
             user.avatar = form.cleaned_data['avatar']  # Assign the avatar value
-
-            # previous_image = user.avatar.path if user.avatar else None
-            
-            # if previous_image and os.path.isfile(previous_image):
-            #     os.remove(previous_image)
-            # Rename the file if needed
-            # new_filename = 'Default.jpg'  # Modify the filename as per your requirements
-
-            # Save the image to the desired directory
-            # with open('C:\\Users\\User\\Desktop\\Django_projects\\puddle\\media\\avatars\\' + new_filename, 'wb') as destination:
-
-            #     for chunk in user.avatar.chunks():
-            #         destination.write(chunk)
-
             user.save()  # Save the user instance
             profile_url = reverse('core:profile', kwargs={'pk': user.pk})
             return redirect(profile_url)

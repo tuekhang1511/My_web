@@ -13,13 +13,13 @@ def send_email_token(email,token):
     
     return True
 
-from django.contrib.auth.backends import ModelBackend
+# from django.contrib.auth.backends import ModelBackend
 
-class EmailVerificationBackend(ModelBackend):
-    def authenticate(self, request, username=None, password=None, **kwargs):
-        user = super().authenticate(request, username=username, password=password, **kwargs)
+# class EmailVerificationBackend(ModelBackend):
+#     def authenticate(self, request, username=None, password=None, **kwargs):
+#         user = super().authenticate(request, username=username, password=password, **kwargs)
         
-        if user and user.email_verified:
-            return user
+#         if user and user.email_verified:
+#             return user
         
-        return None
+#         return None
