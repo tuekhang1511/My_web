@@ -22,6 +22,7 @@ class Item(models.Model):
     is_sold = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, related_name='items', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    was_owned_by = models.ForeignKey(User, related_name='items_owned', on_delete=models.SET_NULL, default=None, blank=True, null=True)
     class Meta:
         ordering = ('-created_at',)
     def __str__(self):

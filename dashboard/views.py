@@ -6,10 +6,13 @@ from item.models import Item
 
 @login_required
 def index(request):
-    items = Item.objects.filter(created_by=request.user)
+    your_items = Item.objects.filter(created_by=request.user).filter(is_sold=False)
+
+    your_owned_items = Item.objects.filter(was_owned_by=request.user)
 
     return render(request, 'dashboard/index.html',{
-        'items': items,
+        'your_items': your_items,
+        'your_owned_items':your_owned_items,
     })
 
 

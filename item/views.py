@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from .forms import NewItemForm, EditItemForm
 from .models import Category, Item
+from core.models import User
 
 def items(request):
     query = request.GET.get('query', '')
@@ -80,11 +81,14 @@ def delete(request, pk):
 
     return redirect('dashboard:index')
 
-def mark_item_as_sold(request, pk):
+def mark_item_as_sold(request, pk, id):
     item = get_object_or_404(Item, pk=pk)
-
+    user = get_object_or_404(User, pk=id)
     if request.method == 'POST':
         item.is_sold = True
+        item.was_owned_by = user
+        for conversation in item.conversations.all():
+            conversation.delete()
         item.save()
 
     return redirect('item:detail', pk=pk)
