@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{%block title %}Profile{% endblock %}
+
+{% block content %}
+
+<h1 class="text-3xl">Profile</h1>
+
+<h3 class="text-3xl">{{user.username}}</h3>
+
+<h3 class="text-3xl">{{user.email}}</h3>
+<div class="py-6">
+    <a href="{% url 'core:avatar' %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Change avatar</a>
+</div>
+{% endblock %}
